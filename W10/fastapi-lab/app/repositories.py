@@ -38,3 +38,24 @@ class InMemoryTaskRepository(ITaskRepository):
             if task.id == task_id:
                 return task
         return None
+
+from sqlalchemy.orm import Session
+from . import models_orm  # ต้องสร้าง SQLAlchemy Model แยก
+
+class SqlTaskRepository(ITaskRepository):
+    def __init__(self, db: Session):
+        self.db = db
+
+    def get_all(self) -> List[Task]:
+        return self.db.query(models_orm.Task).all()
+
+    def create(self, task_in: TaskCreate) -> Task:
+        db_task = models_orm.Task(**task_in.dict())
+        self.db.add(db_task)
+        self.db.commit()
+        self.db.refresh(db_task)
+        return db_task
+    
+    def get_by_id(self, id: int):
+        # ... implementation ...
+        pass
