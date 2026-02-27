@@ -11,10 +11,6 @@ class Hero(Sprite):
         self.col = 0
         self.elapsed_time = 0
         self.rect = pygame.Rect(x, y, width, height)
-        self.sound = pygame.mixer.Sound('sara/swish-1.wav')
-
-    def act(self):
-        self.sound.play()
 
     def update(self, elapsed_time):
         self.elapsed_time += elapsed_time
